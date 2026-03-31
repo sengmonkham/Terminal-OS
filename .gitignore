@@ -1,4 +1,3 @@
 target/
 Cargo.lock
 .env
-quick_start_guide.md
