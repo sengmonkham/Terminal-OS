@@ -2,13 +2,13 @@ use crossterm::{
     cursor::Show,
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 use ratatui::{
-    backend::CrosstermBackend,
-    widgets::{Block, Borders, Paragraph},
-    layout::{Layout, Direction, Constraint},
     Terminal,
+    backend::CrosstermBackend,
+    layout::{Constraint, Direction, Layout},
+    widgets::{Block, Borders, Paragraph},
 };
 use std::{error::Error, io};
 
@@ -34,13 +34,16 @@ impl Drop for TerminalGuard {
     }
 }
 
-pub fn run() -> Result<(), Box<dyn Error>> {
+use crate::state::AppState;
+
+pub fn run(app_state: AppState) -> Result<(), Box<dyn Error>> {
+
     let _guard = TerminalGuard::init()?;
 
     let backend = CrosstermBackend::new(io::stdout());
     let mut terminal = Terminal::new(backend)?;
 
-    loop {
+    while app_state.is_running {
         terminal.draw(|f| {
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
@@ -53,8 +56,9 @@ pub fn run() -> Result<(), Box<dyn Error>> {
                 .borders(Borders::ALL);
             f.render_widget(main_block, chunks[0]);
 
-            let status_bar = Paragraph::new(" Status: Running | Preloaded apps active | Press 'q' to quit")
-                .block(Block::default().borders(Borders::ALL));
+            let status_bar =
+                Paragraph::new(" Status: Running | Preloaded apps active | Press 'q' to quit")
+                    .block(Block::default().borders(Borders::ALL));
             f.render_widget(status_bar, chunks[1]);
         })?;
 

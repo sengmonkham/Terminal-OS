@@ -1,14 +1,11 @@
-#[derive(Debug, Describe, Default)]
-pub struct Config {
-    pub Workspace: Vec<WorkspaceConfig>,
-}
+use serde::Deserialize;
 
-#[derive(Debug, Deserealize, Default)]
+#[derive(Debug, Deserialize, Default)]
 pub struct Config {
     pub workspace: Vec<WorkspaceConfig>,
 }
 
-#[derive(Debug, Deserealize, Default)]
+#[derive(Debug, Deserialize, Default)]
 pub struct WorkspaceConfig {
     pub name: String,
     pub preload_apps: Vec<String>,
