@@ -9,6 +9,7 @@ mod ui;
 use config::Config;
 use state::AppState;
 use std::error::Error;
+use std::fs;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -27,7 +28,13 @@ enum Commands {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
-    let config = Config::default();
+    //load from file
+    let config_str = fs::read_to_string("config.toml").unwrap_or_else(|_| "".to_string());
+    let config = if config_str.is_empty() {
+        Config::default()
+    } else {
+        Config::load(&config_str)
+    };
     let app_state = AppState::new(config);
 
     match &cli.command {
