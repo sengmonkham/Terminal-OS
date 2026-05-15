@@ -46,7 +46,6 @@ pub fn run(mut app_state: AppState) -> Result<(), Box<dyn Error>> {
         terminal.draw(|f| {
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
-                .margin(1)
                 .constraints([Constraint::Min(0), Constraint::Length(3)].as_ref())
                 .split(f.area());
 
