@@ -50,21 +50,11 @@ pub fn run(mut app_state: AppState) -> Result<(), Box<dyn Error>> {
                 .constraints([Constraint::Min(0), Constraint::Length(3)].as_ref())
                 .split(f.area());
 
-            if app_state.running_apps.is_empty() {
-                let empty_block = Block::default()
-                    .title("Terminal OS - Workspace")
-                    .borders(Borders::ALL);
-                f.render_widget(empty_block, chunks[0]);
-            } else {
+            if !app_state.running_apps.is_empty() {
                 if let Some(active_app) = app_state.running_apps.get_mut(app_state.active_app_index) {
                     active_app.render(f, chunks[0]);
                 }
             }
-
-            let main_block = Block::default()
-                .title(" Terminal OS - Workspace ")
-                .borders(Borders::ALL);
-            f.render_widget(main_block, chunks[0]);
 
             let status_bar =
                 Paragraph::new(" Status: Running | Preloaded apps active | Press 'q' to quit")

@@ -21,7 +21,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    //strat the background commands
+    //start the background commands
     Daemon,
     Client,
 }
